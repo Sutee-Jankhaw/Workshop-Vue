@@ -1,25 +1,37 @@
 <template>
-  <v-app>
+    <v-app>
   <div>
-    <h1>API CONNECT</h1>
-    <v-btn color="success" @click="newItem">
-        NewItem
-    </v-btn>
+    <h1>รายการสินค้า</h1>
     <v-row>
       <v-col cols="3" v-for="( item,index ) in apidata" :key="index">
     <div>
     <v-card width="350">
-      <v-img src="https://static.vecteezy.com/system/resources/thumbnails/057/068/323/small/single-fresh-red-strawberry-on-table-green-background-food-fruit-sweet-macro-juicy-plant-image-photo.jpg"></v-img>
+      <v-img 
+        :src="item.image"
+        width="350"
+        height="300"
+      ></v-img>
       <v-card-title primary-title>
         {{ item.productname }}
       </v-card-title>
+      <v-card-subtitle class="description">
+        {{ item.description }}
+      </v-card-subtitle>
       <v-card-actions>
-        <v-btn color="success" @click="editItem(item)">
+        ฿{{ item.price }}
+        <v-spacer/>
+        <v-btn
+          icon
+          @click="addToCart(item)"
+        >
+            <v-icon>mdi-cart-plus</v-icon>
+        </v-btn>
+        <!-- <v-btn color="success" @click="editItem(item)">
             Edit
         </v-btn>
         <v-btn color="error" @click="deleteItem(item)">
             Delete
-        </v-btn>
+        </v-btn> -->
       </v-card-actions>
     </v-card>
     </div>
@@ -166,10 +178,37 @@ export default {
                 alert(error)
             }
         },
+        addToCart(item) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || []
+
+            const existingItem = cart.find(
+                cartItem => cartItem._id === item._id
+            )
+
+            if (existingItem) {
+                existingItem.amount++
+            } else {
+                cart.push({
+                ...item,
+                amount: 1
+                })
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart))
+
+            window.dispatchEvent(new Event('cart-updated'))
+        }
     }
 }
 </script>
 
 <style>
+.description {
+  height: 48px;
 
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
 </style>
