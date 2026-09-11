@@ -12,7 +12,7 @@
                 <v-list-item-avatar>
                   <v-icon>mdi-home</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-title>Apicon</v-list-item-title>
+                <v-list-item-title>Home</v-list-item-title>
               </div>
             </v-list-item-content>
           </v-list-item>
@@ -32,6 +32,26 @@
               </div>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item to="/product">
+            <v-list-item-content>
+              <div class="drawer-item">
+                <v-list-item-avatar>
+                  <v-icon>mdi-treasure-chest-outline</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-title>Manage Product</v-list-item-title>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/order">
+            <v-list-item-content>
+              <div class="drawer-item">
+                <v-list-item-avatar>
+                  <v-icon>mdi-archive</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-title>Manage Order</v-list-item-title>
+              </div>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
     <v-app-bar
@@ -48,15 +68,9 @@
           transition="scale-transition"
           width="40"
         />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h1>
+          Vuetify Shop
+        </h1>
       </div>
     </v-app-bar>
 
@@ -70,8 +84,6 @@
 export default {
     data() {
         return {
-          user1: '',
-          user2: '',
           drawer: true,
           cart: []
         }
@@ -82,15 +94,10 @@ export default {
     },
     mounted() {
       this.loadCart()
-
-      window.addEventListener('cart-updated', this.loadCart)
-    },
-    beforeDestroy() {
-      window.removeEventListener('cart-updated', this.loadCart)
     },
     methods: {
       loadCart() {
-        this.cart = JSON.parse(localStorage.getItem('cart'))
+        this.cart = JSON.parse(localStorage.getItem('cart')) || []
       },
     }
 }
@@ -108,6 +115,7 @@ export default {
 .navigation-drawer {
   z-index: 5 !important;
   top: 55px !important;
+  background-color: rgb(233, 253, 253) !important;
 }
 
 .v-main {

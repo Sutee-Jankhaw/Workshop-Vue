@@ -58,9 +58,9 @@
       <v-card-actions>
         <v-spacer/>
         <div class="total-price">
-            ทั้งหมด {{ totalPrice }}
+            ทั้งหมด ฿{{ totalPrice }}
         </div>
-        <v-btn color="success">Buy</v-btn>
+        <v-btn color="success" @click="createOrderdata">Buy</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -86,7 +86,7 @@ export default {
 
   methods: {
     loadCart() {
-      this.cart = JSON.parse(localStorage.getItem('cart'))
+      this.cart = JSON.parse(localStorage.getItem('cart')) || []
     },
 
     increaseAmount(item) {
@@ -108,12 +108,33 @@ export default {
       this.saveCart()
     },
 
+    clearCart() {
+      localStorage.removeItem('cart')
+      this.cart = []
+    },
+
     saveCart() {
       localStorage.setItem(
         'cart',
         JSON.stringify(this.cart)
       )
-    }
+    },
+
+    async createOrderdata() {
+      try {
+        if (this.cart.length == 0) {
+          alert('ยังไม่มีสินค้าในตะกร้า')
+        } else {
+          await this.axios.post('http://localhost:3000/api/v1/orders', this.cart)
+          this.clearCart()
+          alert('Order completed')
+        }
+
+      } catch(error) {
+        console.log(error)
+        alert(error.response.data.message)
+      }
+    },
   }
 }
 </script>

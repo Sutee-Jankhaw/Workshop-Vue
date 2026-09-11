@@ -12,5 +12,10 @@ export default {
   data: () => ({
     //
   }),
+  computed: {
+    cart() {
+      return this.$store.state.cart
+    }
+  },
 };
 </script>
